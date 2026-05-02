@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="TriageIQ — Clinician-Supervised AI Triage & Diagnostic Support. CTAS-aligned intake, evidence-grounded differential generation, full clinician verification. Built at Laurentian University by Md Rashed Azad Chowdhury.">
+<meta property="og:title" content="TriageIQ — Clinician-Supervised AI Triage">
+<meta property="og:description" content="CTAS-aligned patient intake · Evidence-grounded AI differentials · Full clinician verification workflow">
+<meta property="og:type" content="website">
+<title>TriageIQ — Clinician-Supervised AI Triage · Laurentian University</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1a3a5c;--navy-d:#0f2540;--navy-l:#2a5080;
+  --teal:#0891b2;--teal-l:#67e8f9;
+  --red:#dc2626;--red-l:#fef2f2;
+  --green:#16a34a;--green-l:#f0fdf4;
+  --amber:#d97706;--amber-l:#fffbeb;
+  --blue-l:#eff6ff;--blue-m:#93c5fd;
+  --surface:#f8fafc;--card:#fff;
+  --text:#0f172a;--muted:#64748b;--border:#e2e8f0;
+  --fd:'Syne',sans-serif;--fb:'Inter',sans-serif;--fm:'JetBrains Mono',monospace;
+  --r:8px;--rl:14px;--tr:.2s cubic-bezier(.4,0,.2,1);
+  --sh:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --sh-lg:0 10px 40px rgba(0,0,0,.12);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--surface);color:var(--text);font-size:16px;line-height:1.7;overflow-x:hidden}
+a{color:var(--teal);text-decoration:none;transition:color var(--tr)}
+a:hover{color:var(--navy)}
+h1,h2,h3,h4{font-family:var(--fd);line-height:1.25}
+.c{max-width:1100px;margin:0 auto;padding:0 1.5rem}
+.sec{padding:5rem 0}
+
+/* HEADER */
+#hdr{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);transition:box-shadow var(--tr)}
+#hdr.sc{box-shadow:var(--sh-lg)}
+.hi{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;max-width:1100px;margin:0 auto}
+.sl{display:flex;align-items:center;gap:10px}
+.lm{width:36px;height:36px;border-radius:var(--r);background:var(--navy);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:13px;font-weight:700;color:#fff;letter-spacing:-.5px}
+.lt{font-family:var(--fd);font-size:17px;font-weight:700;color:var(--navy)}
+.ls{font-size:10px;color:var(--muted);margin-top:-2px}
+.nav{display:flex;gap:2rem;align-items:center}
+.nav a{font-size:13px;color:var(--muted);transition:color var(--tr)}
+.nav a:hover{color:var(--navy)}
+.nc{padding:7px 18px;background:var(--navy);color:#fff!important;border-radius:20px;font-size:13px;font-weight:500;transition:background var(--tr)!important}
+.nc:hover{background:var(--navy-l)!important}
+
+/* HERO */
+#hero{min-height:100vh;padding-top:80px;background:linear-gradient(160deg,var(--navy-d) 0%,var(--navy) 55%,#1e4f7a 100%);display:flex;align-items:center;overflow:hidden;position:relative}
+#hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 80% 50%,rgba(8,145,178,.15) 0%,transparent 65%)}
+.hg{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative}
+.hew{display:inline-flex;align-items:center;gap:8px;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.6);margin-bottom:1.25rem;border:1px solid rgba(255,255,255,.15);padding:5px 14px;border-radius:20px}
+.ht{font-size:clamp(2.2rem,4.5vw,3.4rem);color:#fff;margin-bottom:1rem;line-height:1.1}
+.ht span{color:var(--teal-l)}
+.hd{color:rgba(255,255,255,.7);font-size:1.05rem;margin-bottom:2rem;max-width:480px}
+.hps{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:2rem}
+.hp{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);padding:5px 14px;border-radius:20px;font-size:12px;color:rgba(255,255,255,.85)}
+.hca{display:flex;gap:1rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;transition:all var(--tr);border:none;font-family:var(--fb)}
+.bw{background:#fff;color:var(--navy)}
+.bw:hover{background:#f0f9ff;color:var(--navy);transform:translateY(-2px)}
+.bg{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.3)}
+.bg:hover{border-color:#fff;transform:translateY(-2px)}
+
+/* APP MOCKUP */
+.am{background:#fff;border-radius:var(--rl);box-shadow:0 32px 80px rgba(0,0,0,.4);overflow:hidden;border:1px solid rgba(255,255,255,.1);animation:float 6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.mtb{background:var(--navy);padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
+.mtt{font-weight:600;font-size:13px;color:#fff}
+.mts{font-size:10px;color:rgba(255,255,255,.55)}
+.sp{background:#b91c1c;padding:4px 10px;border-radius:5px;font-size:10px;font-weight:600;color:#fff}
+.mb2{padding:14px}
+.rb{background:var(--blue-l);border:1px solid var(--blue-m);border-radius:var(--r);padding:12px;margin-bottom:12px}
+.rt{font-size:10px;font-weight:700;color:#1e40af;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.rtt{font-size:14px;font-weight:600;color:#1e3a5f}
+.rd{font-size:11px;color:#374151;margin-top:2px}
+.dc{border:1px solid var(--border);border-radius:var(--r);padding:10px;margin-bottom:8px;transition:all .3s}
+.dc.acc{border-color:#16a34a;background:var(--green-l)}
+.dc.rej{border-color:#dc2626;background:var(--red-l);opacity:.6}
+.dn{font-weight:600;font-size:12px;color:var(--text);margin-bottom:4px}
+.dm2{font-size:10px;color:var(--muted);margin-bottom:6px}
+.db{display:flex;gap:6px}
+.dbt{flex:1;padding:5px;border-radius:5px;border:1px solid var(--border);background:#fff;font-size:11px;font-weight:500;cursor:pointer;transition:all .2s}
+.dbt:hover{background:var(--surface)}
+.dbt.ac{background:var(--green-l);border-color:#16a34a;color:#14532d}
+.dbt.rj{background:var(--red-l);border-color:#dc2626;color:#7f1d1d}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600}
+
+/* PROBLEM */
+.sg{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin-top:2rem}
+.sc2{background:var(--red-l);border:1px solid #fecaca;border-radius:var(--rl);padding:1.25rem}
+.sn{font-family:var(--fd);font-size:2rem;color:#b91c1c;font-weight:700;line-height:1}
+.sl2{font-size:12px;color:#7f1d1d;margin-top:.3rem}
+.sol{background:var(--blue-l);border:1px solid var(--blue-m);border-radius:var(--rl);padding:1.25rem;margin-top:1.5rem;font-size:14px;color:#1e40af;line-height:1.7}
+
+/* HEADINGS */
+.ew{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--teal);margin-bottom:.6rem;font-weight:600}
+.ew-w{color:rgba(255,255,255,.6)}
+.st{font-size:clamp(1.7rem,3vw,2.4rem);color:var(--navy);margin-bottom:1rem}
+.st span{color:var(--teal)}
+.st-w{color:#fff}
+.sd{color:var(--muted);max-width:560px}
+.sd-w{color:rgba(255,255,255,.65)}
+
+/* HOW IT WORKS */
+.stg{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.5rem;margin-top:3rem}
+.scard{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.75rem;box-shadow:var(--sh);transition:all var(--tr)}
+.scard:hover{transform:translateY(-4px);box-shadow:var(--sh-lg)}
+.snum{font-family:var(--fd);font-size:3rem;font-weight:700;color:var(--border);line-height:1;margin-bottom:.5rem}
+.sic{font-size:26px;margin-bottom:.75rem}
+.sti{font-family:var(--fd);font-size:15px;color:var(--navy);margin-bottom:.5rem}
+.sde{font-size:13px;color:var(--muted);line-height:1.65}
+
+/* DEMO PANEL */
+.demo-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;box-shadow:var(--sh-lg);margin-top:3rem}
+.dp-tabs{display:flex;border-bottom:1px solid var(--border)}
+.dp-tab{padding:.75rem 1.5rem;font-size:13px;font-weight:500;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;transition:all var(--tr)}
+.dp-tab.active{color:var(--navy);border-bottom-color:var(--navy)}
+.dp-body{padding:1.5rem}
+.chat-demo{display:flex;flex-direction:column;gap:12px}
+.cm{display:flex;gap:10px}
+.cm.u{flex-direction:row-reverse}
+.av{width:28px;height:28px;border-radius:50%;background:#e0e7ff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#3730a3;flex-shrink:0}
+.bub{max-width:78%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.5}
+.bub.ai{background:var(--surface);color:var(--text)}
+.bub.u{background:var(--navy);color:#fff}
+.bub.alert{background:var(--red-l);border:1px solid #fecaca;color:#7f1d1d}
+.pulse-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#dc2626;animation:pulse 1s ease-in-out infinite;margin-right:6px}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.red-bar{background:var(--red-l);border-bottom:2px solid #dc2626;padding:10px 16px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#7f1d1d}
+
+/* TECH */
+.tech-section{background:var(--navy)}
+.tg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.25rem;margin-top:3rem}
+.tc{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--rl);padding:1.5rem;transition:all var(--tr)}
+.tc:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)}
+.tcat{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal-l);margin-bottom:.75rem;font-weight:600}
+.tis{display:flex;flex-wrap:wrap;gap:6px}
+.ttag{font-family:var(--fm);font-size:11px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);padding:3px 10px;border-radius:5px;color:rgba(255,255,255,.85)}
+
+/* FEATURES */
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3rem}
+.fc{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:1.75rem;box-shadow:var(--sh)}
+.fic{width:44px;height:44px;border-radius:var(--r);background:var(--blue-l);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:1rem}
+.fti{font-family:var(--fd);font-size:15px;color:var(--navy);margin-bottom:.5rem}
+.fde{font-size:14px;color:var(--muted);line-height:1.65}
+
+/* API TABLE */
+.api-wrap{overflow-x:auto;margin-top:2rem;border-radius:var(--r);border:1px solid var(--border)}
+.at{width:100%;border-collapse:collapse;font-size:14px}
+.at th{background:var(--navy);color:#fff;padding:10px 16px;text-align:left;font-family:var(--fd);font-size:12px}
+.at td{padding:10px 16px;border-bottom:1px solid var(--border)}
+.at tr:last-child td{border-bottom:none}
+.at tr:hover td{background:var(--surface)}
+.meth{font-family:var(--fm);font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px}
+.meth.g{background:#d1fae5;color:#14532d}
+.meth.p{background:#dbeafe;color:#1e3a8a}
+.ep{font-family:var(--fm);font-size:12px;color:var(--navy)}
+
+/* METRICS */
+.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.5rem;margin-top:3rem}
+.mc{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:2rem;text-align:center;box-shadow:var(--sh)}
+.mn{font-family:var(--fd);font-size:2.5rem;font-weight:700;color:var(--navy);line-height:1}
+.mu{font-size:13px;color:var(--muted);margin-top:.25rem}
+.ml{font-size:12px;color:var(--muted);margin-top:.4rem}
+
+/* DISCLAIMER */
+.disc{background:#fff8f0;border:1px solid #fed7aa;border-radius:var(--rl);padding:1.25rem 1.5rem;display:flex;gap:12px;align-items:flex-start;margin-top:2rem}
+.di{font-size:20px;flex-shrink:0;margin-top:2px}
+.dt{font-size:13px;color:#92400e;line-height:1.6}
+
+/* ABOUT */
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+.ct{display:flex;flex-wrap:wrap;gap:8px;margin-top:1.25rem}
+.ctg{font-size:12px;padding:4px 12px;border-radius:12px;background:var(--blue-l);border:1px solid var(--blue-m);color:var(--navy);font-weight:500}
+.cc{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:2rem;box-shadow:var(--sh)}
+.cr{display:flex;align-items:center;gap:12px;padding:.75rem 0;border-bottom:1px solid var(--border)}
+.cr:last-child{border-bottom:none}
+.ci{width:36px;height:36px;border-radius:var(--r);background:var(--blue-l);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.cla{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.cva{font-size:13px;color:var(--text)}
+.cva a{color:var(--teal)}
+
+/* FOOTER */
+#ftr{background:var(--navy-d);padding:2.5rem 0}
+.fi{display:flex;flex-direction:column;align-items:center;gap:1rem;text-align:center}
+.flo{font-family:var(--fd);font-size:18px;color:#fff}
+.ftg{font-size:13px;color:rgba(255,255,255,.45)}
+.fls{display:flex;gap:1.5rem}
+.fls a{font-size:13px;color:rgba(255,255,255,.45);transition:color var(--tr)}
+.fls a:hover{color:var(--teal-l)}
+.fd2{font-size:11px;color:rgba(255,255,255,.3);max-width:600px}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hg,.ag{grid-template-columns:1fr}
+  .am{display:none}
+  .nav{display:none}
+  .sg{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="hdr">
+  <div class="hi">
+    <div class="sl">
+      <div class="lm">TIQ</div>
+      <div>
+        <div class="lt">TriageIQ</div>
+        <div class="ls">Laurentian University · Research 2026</div>
+      </div>
+    </div>
+    <nav class="nav" aria-label="Primary">
+      <a href="#problem">Problem</a>
+      <a href="#how">How It Works</a>
+      <a href="#demo">Demo</a>
+      <a href="#tech">Tech</a>
+      <a href="#about">About</a>
+      <a href="https://github.com/rashed079/triageiq" class="nc" target="_blank" rel="noopener">GitHub ↗</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="c">
+    <div class="hg">
+      <div>
+        <div class="hew">Laurentian University · Research 2026</div>
+        <h1 class="ht">Clinician-Supervised<br><span>AI Triage</span><br>& Diagnostic Support</h1>
+        <p class="hd">TriageIQ combines structured CTAS-aligned patient intake with evidence-grounded AI — keeping the clinician fully in control of every decision.</p>
+        <div class="hps">
+          <span class="hp">CTAS-aligned intake</span>
+          <span class="hp">Evidence-grounded AI</span>
+          <span class="hp">Clinician verification</span>
+          <span class="hp">Runs 100% locally</span>
+        </div>
+        <div class="hca">
+          <a href="#demo" class="btn bw">See Interactive Demo ↓</a>
+          <a href="https://github.com/rashed079/triageiq" class="btn bg" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </div>
+      <div aria-hidden="true">
+        <div class="am">
+          <div class="mtb">
+            <div><div class="mtt">TriageIQ — Clinician Verification</div><div class="mts">Session demo · AI-generated drafts</div></div>
+            <div class="sp">Awaiting Sign-off</div>
+          </div>
+          <div class="mb2">
+            <div class="rb">
+              <div class="rt">Routing suggestion · CTAS 3</div>
+              <div class="rtt">Urgent Care — Neurology pathway</div>
+              <div class="rd">Severe unilateral headache with photophobia, nausea. Rule out serious causes.</div>
+            </div>
+            <div class="dc acc" id="m-d1">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+                <div class="dn">Migraine with aura</div>
+                <div style="display:flex;gap:4px">
+                  <span class="badge" style="background:#fee2e2;color:#7f1d1d">Urgent</span>
+                  <span class="badge" style="background:#e0e7ff;color:#3730a3">Grade A</span>
+                </div>
+              </div>
+              <div class="dm2">Unilateral throbbing · photophobia · nausea · severity 7/10</div>
+              <div class="db">
+                <button class="dbt ac" onclick="mockAccept('m-d1',this)">✓ Accepted</button>
+                <button class="dbt" onclick="mockReject('m-d1',this)">Reject</button>
+              </div>
+            </div>
+            <div class="dc" id="m-d2">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+                <div class="dn">Tension headache</div>
+                <span class="badge" style="background:#d1fae5;color:#14532d">Less urgent</span>
+              </div>
+              <div class="dm2">Bilateral pressure · mild-moderate · no aura</div>
+              <div class="db">
+                <button class="dbt" onclick="mockAccept('m-d2',this)">Accept</button>
+                <button class="dbt" onclick="mockReject('m-d2',this)">Reject</button>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <select style="flex:1;padding:6px 10px;border-radius:6px;font-size:11px;border:1px solid var(--border);font-family:var(--fb)">
+                <option>CTAS 3 — Urgent (AI suggestion)</option>
+                <option>CTAS 2 — Emergent</option>
+              </select>
+              <button style="padding:6px 14px;background:var(--navy);color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">Sign Off</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem" class="sec">
+  <div class="c">
+    <p class="ew">The Problem</p>
+    <h2 class="st">Emergency Departments Are <span>Overwhelmed</span></h2>
+    <p class="sd">Existing tools either lack clinical rigor or bypass clinician oversight entirely. TriageIQ was built to solve both.</p>
+    <div class="sg">
+      <div class="sc2"><div class="sn">4.5 hrs</div><div class="sl2">Avg ED wait time in Canada</div></div>
+      <div class="sc2"><div class="sn">40%</div><div class="sl2">Clinician time consumed by documentation</div></div>
+      <div class="sc2"><div class="sn">Low</div><div class="sl2">Accuracy of unsupervised AI symptom checkers</div></div>
+      <div class="sc2"><div class="sn">0</div><div class="sl2">Existing tools with full clinician oversight loop</div></div>
+    </div>
+    <div class="sol">
+      <strong>TriageIQ solves this</strong> by combining structured CTAS-aligned patient intake with evidence-grounded AI differential generation — keeping the clinician fully in control of every triage and diagnostic decision. No autonomous AI decisions. Ever.
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="sec" style="background:#fff;border-top:1px solid var(--border)">
+  <div class="c">
+    <p class="ew">Workflow</p>
+    <h2 class="st">How <span>TriageIQ</span> Works</h2>
+    <p class="sd">A four-stage pipeline from patient symptom intake through clinician-verified sign-off.</p>
+    <div class="stg">
+      <div class="scard"><div class="snum">01</div><div class="sic">💬</div><h3 class="sti">CTAS-Aligned Intake</h3><p class="sde">Conversational AI chatbot guides patients through structured symptom collection — aligned with Canadian Triage and Acuity Scale (CTAS) criteria. Red-flag detection triggers immediate clinical escalation.</p></div>
+      <div class="scard"><div class="snum">02</div><div class="sic">🧠</div><h3 class="sti">Structured Extraction</h3><p class="sde">Claude API extracts CTAS fields from the conversation — chief complaint, onset, severity, duration, associated symptoms — into a structured JSON object for clinical review.</p></div>
+      <div class="scard"><div class="snum">03</div><div class="sic">📚</div><h3 class="sti">Evidence-Grounded AI</h3><p class="sde">RAG engine retrieves relevant clinical guidelines from a FAISS vector index and passes them to Claude alongside patient data — generating differential diagnoses with source citations.</p></div>
+      <div class="scard"><div class="snum">04</div><div class="sic">✅</div><h3 class="sti">Clinician Verification</h3><p class="sde">Clinician reviews AI-generated differentials, accepts or rejects each one, selects final CTAS level, and signs off. Full audit trail maintained. Zero autonomous AI decisions.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERACTIVE DEMO -->
+<section id="demo" class="sec">
+  <div class="c">
+    <p class="ew">Interactive Demo</p>
+    <h2 class="st">See <span>TriageIQ</span> in Action</h2>
+    <p class="sd">Click through the patient intake, red-flag detection, and clinician verification panels below.</p>
+    <div class="demo-panel">
+      <div class="dp-tabs">
+        <div class="dp-tab active" onclick="showTab('intake',this)">Patient Intake</div>
+        <div class="dp-tab" onclick="showTab('redflag',this)">Red Flag Detection</div>
+        <div class="dp-tab" onclick="showTab('clinician',this)">Clinician Dashboard</div>
+      </div>
+      <div id="tab-intake" class="dp-body" style="padding:0">
+        <div style="background:var(--navy);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)">
+          <div><div style="font-weight:600;font-size:13px;color:#fff">TriageIQ Patient Intake</div><div style="font-size:11px;color:rgba(255,255,255,.6)">Your responses will be reviewed by a clinician</div></div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <span id="intake-status" style="font-size:10px;color:rgba(255,255,255,.5)">Session active</span>
+            <button onclick="resetChat()" style="padding:3px 10px;border:1px solid rgba(255,255,255,.25);background:transparent;color:rgba(255,255,255,.7);border-radius:5px;font-size:11px;cursor:pointer">Reset</button>
+          </div>
+        </div>
+        <div id="intake-chat" style="padding:1rem;display:flex;flex-direction:column;gap:10px;max-height:340px;overflow-y:auto">
+          <div class="cm"><div class="av">AI</div><div class="bub ai">Hello. I'm going to ask you a few questions about what brought you in today. Everything you share will be reviewed by a clinician.<br><br><strong>What is your main concern today?</strong></div></div>
+        </div>
+        <div style="border-top:1px solid var(--border);padding:.75rem 1rem">
+          <div style="display:flex;gap:8px;margin-bottom:.6rem;flex-wrap:wrap">
+            <span style="font-size:11px;color:var(--muted);align-self:center">Try:</span>
+            <button class="qbtn" onclick="quickSend('I have a severe headache')">severe headache</button>
+            <button class="qbtn" onclick="quickSend('chest pain and shortness of breath')">chest pain</button>
+            <button class="qbtn" onclick="quickSend('my knee is swollen')">swollen knee</button>
+            <button class="qbtn" onclick="quickSend('I feel dizzy and nauseous')">dizzy + nauseous</button>
+            <button class="qbtn" onclick="quickSend('I have a high fever')">high fever</button>
+            <button class="qbtn" onclick="quickSend('abdominal pain')">abdominal pain</button>
+          </div>
+          <div style="display:flex;gap:8px">
+            <input id="chat-input" type="text" placeholder="Type your symptom or answer..." style="flex:1;padding:9px 14px;border:1px solid var(--border);border-radius:var(--r);font-size:13px;font-family:var(--fb);outline:none" onkeydown="if(event.key==='Enter')sendChat()">
+            <button onclick="sendChat()" style="padding:9px 18px;background:var(--navy);color:#fff;border:none;border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;transition:background .2s" onmouseover="this.style.background='var(--navy-l)'" onmouseout="this.style.background='var(--navy)'">Send</button>
+          </div>
+        </div>
+      </div>
+      <div id="tab-redflag" class="dp-body" style="display:none">
+        <div class="red-bar"><span class="pulse-dot"></span>The clinical team has been alerted. Please remain where you are.</div>
+        <div class="chat-demo" style="margin-top:1rem">
+          <div class="cm"><div class="av">AI</div><div class="bub ai">Hello. What is your main concern today?</div></div>
+          <div class="cm u"><div class="bub u">I have chest pain and cannot breathe</div></div>
+          <div class="cm"><div class="av">AI</div><div class="bub alert">I need to alert the clinical team right away. Please stay where you are — someone will be with you very soon. <strong>Do not move.</strong></div></div>
+        </div>
+        <div style="background:var(--red-l);border:1px solid #fecaca;border-radius:var(--r);padding:1rem;margin-top:1rem">
+          <div style="font-weight:600;font-size:13px;color:#7f1d1d;margin-bottom:.4rem">🚨 Red Flag Detected — Immediate Escalation</div>
+          <div style="font-size:12px;color:#991b1b">Keywords matched: <code style="background:#fecaca;padding:1px 6px;border-radius:4px">chest pain</code> + <code style="background:#fecaca;padding:1px 6px;border-radius:4px">cannot breathe</code> → CTAS 1 auto-escalation protocol triggered. Clinician dashboard alerted.</div>
+        </div>
+      </div>
+      <div id="tab-clinician" class="dp-body" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px">
+          <div><div style="font-weight:600;font-size:14px;color:var(--navy)">Clinician Verification Dashboard</div><div style="font-size:12px;color:var(--muted)">AI-generated drafts — all decisions require clinician sign-off</div></div>
+          <span class="badge" style="background:#fee2e2;color:#7f1d1d;font-size:12px;padding:4px 12px">Awaiting Sign-off</span>
+        </div>
+        <div class="rb">
+          <div class="rt">AI Routing Suggestion · CTAS 3</div>
+          <div class="rtt">Urgent Care — Neurology pathway</div>
+          <div class="rd">Severe unilateral headache with photophobia and nausea. Rule out subarachnoid haemorrhage and meningitis.</div>
+        </div>
+        <div class="dc" id="c-d1">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+            <div class="dn">Migraine with aura</div>
+            <div style="display:flex;gap:4px">
+              <span class="badge" style="background:#fee2e2;color:#7f1d1d">Urgent</span>
+              <span class="badge" style="background:#b91c1c;color:#fff">High confidence</span>
+              <span class="badge" style="background:#e0e7ff;color:#3730a3">Grade A evidence</span>
+            </div>
+          </div>
+          <div class="dm2">Unilateral throbbing headache · photophobia · nausea · onset 3 hours · severity 7/10 · CTAS guideline §3.2 cited</div>
+          <div class="db">
+            <button class="dbt" id="c-d1-a" onclick="clinAccept('c-d1')">Accept</button>
+            <button class="dbt" id="c-d1-r" onclick="clinReject('c-d1')">Reject</button>
+          </div>
+        </div>
+        <div class="dc" id="c-d2">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+            <div class="dn">Tension headache</div>
+            <div style="display:flex;gap:4px">
+              <span class="badge" style="background:#d1fae5;color:#14532d">Less urgent</span>
+              <span class="badge" style="background:#b45309;color:#fff">Medium confidence</span>
+            </div>
+          </div>
+          <div class="dm2">Bilateral pressure · mild-moderate severity · no aura reported</div>
+          <div class="db">
+            <button class="dbt" id="c-d2-a" onclick="clinAccept('c-d2')">Accept</button>
+            <button class="dbt" id="c-d2-r" onclick="clinReject('c-d2')">Reject</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;margin-top:1rem;flex-wrap:wrap">
+          <select id="ctas-sel" style="flex:1;min-width:200px;padding:8px 12px;border-radius:var(--r);font-size:13px;border:1px solid var(--border);font-family:var(--fb)">
+            <option value="">Select CTAS level to enable sign-off</option>
+            <option value="2">2 — Emergent</option>
+            <option value="3">3 — Urgent</option>
+            <option value="4">4 — Less Urgent</option>
+          </select>
+          <button id="signoff-btn" onclick="doSignoff()" style="padding:8px 20px;background:#ccc;color:#fff;border:none;border-radius:var(--r);font-size:13px;font-weight:600;cursor:not-allowed;transition:all .2s">Sign Off & Finalize</button>
+        </div>
+        <div id="signoff-result" style="display:none;margin-top:1rem;background:var(--green-l);border:1px solid #86efac;border-radius:var(--r);padding:1rem;font-size:13px;color:#14532d">
+          <strong>✓ Session finalized.</strong> Clinician sign-off recorded. Full audit trail saved. Patient routing confirmed.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section id="tech" class="sec tech-section">
+  <div class="c">
+    <p class="ew ew-w">Technology Stack</p>
+    <h2 class="st st-w">Built with <span style="color:var(--teal-l)">Production-Grade</span> Tools</h2>
+    <p class="sd sd-w">Every layer chosen for reliability, security, and Canadian health-tech compliance readiness.</p>
+    <div class="tg">
+      <div class="tc"><div class="tcat">AI / LLM</div><div class="tis"><span class="ttag">Claude API</span><span class="ttag">claude-sonnet-4</span><span class="ttag">Anthropic SDK</span><span class="ttag">Streaming</span></div></div>
+      <div class="tc"><div class="tcat">Backend</div><div class="tis"><span class="ttag">Python 3.11</span><span class="ttag">FastAPI</span><span class="ttag">Uvicorn</span><span class="ttag">Pydantic</span></div></div>
+      <div class="tc"><div class="tcat">RAG / Vector</div><div class="tis"><span class="ttag">FAISS</span><span class="ttag">RAG Engine</span><span class="ttag">Clinical Guidelines</span><span class="ttag">Citation</span></div></div>
+      <div class="tc"><div class="tcat">Frontend</div><div class="tis"><span class="ttag">React 18</span><span class="ttag">TypeScript</span><span class="ttag">Tailwind CSS</span><span class="ttag">Axios</span></div></div>
+      <div class="tc"><div class="tcat">Infrastructure</div><div class="tis"><span class="ttag">Docker</span><span class="ttag">Docker Compose</span><span class="ttag">CORS</span><span class="ttag">REST API</span></div></div>
+      <div class="tc"><div class="tcat">Compliance Path</div><div class="tis"><span class="ttag">PHIPA-aware</span><span class="ttag">AWS ca-central-1</span><span class="ttag">Audit Logs</span><span class="ttag">Local-first</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- KEY FEATURES -->
+<section class="sec" style="background:#fff;border-top:1px solid var(--border)">
+  <div class="c">
+    <p class="ew">Key Features</p>
+    <h2 class="st">Designed for <span>Clinical Reality</span></h2>
+    <div class="fg">
+      <div class="fc"><div class="fic">🚨</div><h3 class="fti">Red-Flag Detection</h3><p class="fde">Keyword and pattern matching immediately escalates life-threatening presentations (chest pain, stroke symptoms, respiratory distress) — bypassing the intake queue and alerting clinical staff instantly.</p></div>
+      <div class="fc"><div class="fic">📋</div><h3 class="fti">CTAS-Aligned Intake</h3><p class="fde">Conversational intake engine follows Canadian Triage and Acuity Scale criteria — collecting chief complaint, onset, severity (0–10), duration, and associated symptoms in a structured, auditable format.</p></div>
+      <div class="fc"><div class="fic">🔬</div><h3 class="fti">Evidence-Grounded Differentials</h3><p class="fde">RAG engine retrieves relevant clinical guidelines and passes them alongside patient data to Claude — generating differential diagnoses with source citations. No hallucinated evidence.</p></div>
+      <div class="fc"><div class="fic">🔒</div><h3 class="fti">Full Clinician Oversight</h3><p class="fde">Every AI output requires explicit clinician accept/reject review and manual CTAS selection before sign-off. No autonomous AI decisions. Complete audit trail per session.</p></div>
+      <div class="fc"><div class="fic">🏥</div><h3 class="fti">Local-First Architecture</h3><p class="fde">Designed to run 100% locally — no patient data leaves the clinical environment. Cloud deployment path targets AWS ca-central-1 for PHIPA (Ontario) data residency compliance.</p></div>
+      <div class="fc"><div class="fic">📊</div><h3 class="fti">Session Audit Trail</h3><p class="fde">Every intake turn, extraction result, AI differential, clinician decision, and sign-off is logged with timestamps. Full audit trail accessible via REST API for clinical governance.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- METRICS -->
+<section class="sec">
+  <div class="c">
+    <p class="ew">Project Scope</p>
+    <h2 class="st">By the <span>Numbers</span></h2>
+    <div class="mg">
+      <div class="mc"><div class="mn">8</div><div class="mu">REST API endpoints</div><div class="ml">Full session lifecycle management</div></div>
+      <div class="mc"><div class="mn">5</div><div class="mu">CTAS levels</div><div class="ml">Fully structured triage alignment</div></div>
+      <div class="mc"><div class="mn">4</div><div class="mu">pipeline stages</div><div class="ml">Intake → Extract → RAG → Verify</div></div>
+      <div class="mc"><div class="mn">0</div><div class="mu">autonomous decisions</div><div class="ml">100% clinician sign-off required</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- API REFERENCE -->
+<section id="api" class="sec" style="background:#fff;border-top:1px solid var(--border)">
+  <div class="c">
+    <p class="ew">API Reference</p>
+    <h2 class="st">REST API <span>Endpoints</span></h2>
+    <p class="sd">Full FastAPI backend with interactive Swagger docs at <code style="font-family:var(--fm);font-size:13px;background:var(--surface);padding:2px 8px;border-radius:4px;border:1px solid var(--border)">http://localhost:8000/docs</code></p>
+    <div class="api-wrap">
+      <table class="at">
+        <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><span class="meth g">GET</span></td><td><span class="ep">/health</span></td><td>Health check — server status and version</td></tr>
+          <tr><td><span class="meth p">POST</span></td><td><span class="ep">/api/sessions/start</span></td><td>Start new patient intake session</td></tr>
+          <tr><td><span class="meth p">POST</span></td><td><span class="ep">/api/sessions/turn</span></td><td>Send one patient message, receive AI response</td></tr>
+          <tr><td><span class="meth p">POST</span></td><td><span class="ep">/api/sessions/complete</span></td><td>Extract structured data + generate differential</td></tr>
+          <tr><td><span class="meth p">POST</span></td><td><span class="ep">/api/sessions/signoff</span></td><td>Record clinician verification and sign-off</td></tr>
+          <tr><td><span class="meth g">GET</span></td><td><span class="ep">/api/sessions/{id}/result</span></td><td>Retrieve full session result</td></tr>
+          <tr><td><span class="meth g">GET</span></td><td><span class="ep">/api/sessions/{id}/audit</span></td><td>Full audit log for session</td></tr>
+          <tr><td><span class="meth g">GET</span></td><td><span class="ep">/api/sessions</span></td><td>List all sessions</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="disc">
+      <div class="di">⚠️</div>
+      <div class="dt"><strong>Clinical Disclaimer:</strong> TriageIQ is a research demonstration build developed at Laurentian University. It is not approved for clinical use. All AI-generated outputs require clinician verification. No patient data should be entered into this demo system. Health Canada pre-submission consultation required before any clinical pilot.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="sec">
+  <div class="c">
+    <div class="ag">
+      <div>
+        <p class="ew">The Developer</p>
+        <h2 class="st">Md Rashed Azad <span>Chowdhury</span></h2>
+        <p style="color:var(--muted);margin-bottom:1rem">MSc Computational Science candidate at Laurentian University, Sudbury, ON. PMP®-certified IT professional with 12+ years of enterprise technology delivery across financial services and research.</p>
+        <p style="color:var(--muted);margin-bottom:1rem">TriageIQ was developed as part of graduate research in applied AI for healthcare — combining clinical workflow expertise, LLM engineering, and full-stack development.</p>
+        <div class="ct">
+          <span class="ctg">PMP®</span><span class="ctg">CBAP®</span><span class="ctg">ITIL V3</span>
+          <span class="ctg">ISO 27001</span><span class="ctg">Lean Six Sigma BB</span>
+          <span class="ctg">MSc Computational Science</span>
+        </div>
+      </div>
+      <div class="cc">
+        <div class="cr"><div class="ci">📍</div><div><div class="cla">Location</div><div class="cva">Greater Sudbury, ON, Canada</div></div></div>
+        <div class="cr"><div class="ci">📧</div><div><div class="cla">Email</div><div class="cva"><a href="mailto:rashed06cse@gmail.com">rashed06cse@gmail.com</a></div></div></div>
+        <div class="cr"><div class="ci">💼</div><div><div class="cla">LinkedIn</div><div class="cva"><a href="https://www.linkedin.com/in/md-rashed-azad-chowdhury-pmp%C2%AE-a145325a/" target="_blank" rel="noopener">linkedin.com/in/md-rashed-azad-chowdhury</a></div></div></div>
+        <div class="cr"><div class="ci">🐙</div><div><div class="cla">GitHub</div><div class="cva"><a href="https://github.com/rashed079" target="_blank" rel="noopener">github.com/rashed079</a></div></div></div>
+        <div class="cr"><div class="ci">🎓</div><div><div class="cla">Institution</div><div class="cva">Laurentian University · SSML & CROSH Labs · Sudbury, ON</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="ftr">
+  <div class="c">
+    <div class="fi">
+      <div class="flo">TriageIQ</div>
+      <div class="ftg">Clinician-Supervised AI Triage · Laurentian University Research 2026</div>
+      <div class="fls">
+        <a href="https://github.com/rashed079/triageiq" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/md-rashed-azad-chowdhury-pmp%C2%AE-a145325a/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:rashed06cse@gmail.com">Contact</a>
+      </div>
+      <div class="fd2">Not for clinical use · All AI outputs require clinician verification · Demo build only · © 2026 Md Rashed Azad Chowdhury, Laurentian University</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Header scroll
+window.addEventListener('scroll',()=>{
+  document.getElementById('hdr').classList.toggle('sc', window.scrollY > 50);
+},{passive:true});
+
+// Tab switcher
+function showTab(id, btn) {
+  ['intake','redflag','clinician'].forEach(t=>{
+    document.getElementById('tab-'+t).style.display = t===id ? 'block' : 'none';
+  });
+  document.querySelectorAll('.dp-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ── Full conversational intake engine ─────────────────────
+// Each pattern: { match: [keywords], responses: [follow-up questions in order] }
+const FLOWS = [
+  { match: ['chest pain','cannot breathe','can\'t breathe','shortness of breath','heart'],
+    redFlag: true,
+    responses: [] },
+  { match: ['headache','head pain','migraine','head ache','head is pounding'],
+    responses: [
+      'How severe is the pain on a scale of 0–10, and how long has it been going on?',
+      'Are you experiencing any sensitivity to light, nausea, or visual disturbances?',
+      'Is the pain on one side or all over? Did it come on suddenly or gradually?',
+      'Do you have any history of migraines, or is this different from your usual headaches?',
+      'Thank you. Based on your responses I\'m flagging this as a <strong>potential CTAS 3 — Urgent</strong> presentation. A clinician will review your intake now.'
+    ]
+  },
+  { match: ['knee','leg pain','knee swollen','knee pain'],
+    responses: [
+      'How long has your knee been swollen, and did you injure it or did it come on gradually?',
+      'Can you bear weight on it? And how severe is the pain — 0 to 10?',
+      'Is there any redness, warmth, or fever alongside the swelling?',
+      'Do you have any history of arthritis, gout, or previous knee injuries?',
+      'Thank you. This sounds like a <strong>CTAS 4 — Less Urgent</strong> presentation. A clinician will assess you shortly.'
+    ]
+  },
+  { match: ['dizzy','dizziness','nausea','nauseated','nauseous','light headed','lightheaded'],
+    responses: [
+      'How long have you been feeling dizzy, and is the room spinning or do you feel faint?',
+      'Have you vomited, or just felt nauseous? Any recent falls?',
+      'Are you also experiencing any chest pain, shortness of breath, or weakness on one side of your body?',
+      'Have you eaten and had fluids today? Any recent fever or illness?',
+      'Thank you. I\'m flagging this as <strong>CTAS 3 — Urgent</strong> given the combination of symptoms. A clinician will review shortly.'
+    ]
+  },
+  { match: ['fever','temperature','hot','chills','sweating','flu'],
+    responses: [
+      'How high is your fever, and how long have you had it?',
+      'Do you have any other symptoms — sore throat, cough, body aches, or rash?',
+      'Have you taken any medication to bring the fever down? If so, did it help?',
+      'Are you immunocompromised, pregnant, or do you have any chronic conditions?',
+      'Thank you. Based on your responses this looks like a <strong>CTAS 4 — Less Urgent</strong> presentation. You\'ll be seen shortly.'
+    ]
+  },
+  { match: ['stomach','abdominal','abdomen','belly','gut','bowel','vomit'],
+    responses: [
+      'Where exactly is the pain — upper, lower, left, right, or all over your abdomen?',
+      'How severe is it on a scale of 0–10, and did it come on suddenly or gradually?',
+      'Any vomiting, diarrhoea, blood in your stool, or last bowel movement?',
+      'Have you had any recent surgeries, or do you have any known conditions like Crohn\'s or appendix issues?',
+      'Thank you. I\'m flagging this for <strong>CTAS 3 — Urgent</strong> clinical review given the severity you\'ve described.'
+    ]
+  },
+];
+
+// Per-session state
+let chatState = { flowIdx: -1, step: 0, done: false };
+
+function matchFlow(input) {
+  const lower = input.toLowerCase();
+  for (let i = 0; i < FLOWS.length; i++) {
+    if (FLOWS[i].match.some(kw => lower.includes(kw))) return i;
+  }
+  return -1;
+}
+
+function appendMsg(role, html) {
+  const chat = document.getElementById('intake-chat');
+  const div = document.createElement('div');
+  div.className = 'cm' + (role==='user' ? ' u' : '');
+  div.innerHTML = role === 'user'
+    ? `<div class="bub u">${html}</div>`
+    : `<div class="av">AI</div><div class="bub ai">${html}</div>`;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function appendTyping() {
+  const chat = document.getElementById('intake-chat');
+  const div = document.createElement('div');
+  div.className = 'cm'; div.id = 'typing-ind';
+  div.innerHTML = `<div class="av">AI</div><div class="bub ai" style="padding:10px 14px"><div style="display:flex;gap:4px"><span style="width:6px;height:6px;border-radius:50%;background:#9ca3af;animation:bounce2 .9s ease-in-out infinite;display:inline-block"></span><span style="width:6px;height:6px;border-radius:50%;background:#9ca3af;animation:bounce2 .9s ease-in-out .15s infinite;display:inline-block"></span><span style="width:6px;height:6px;border-radius:50%;background:#9ca3af;animation:bounce2 .9s ease-in-out .3s infinite;display:inline-block"></span></div></div>`;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typing-ind');
+  if (t) t.remove();
+}
+
+function sendChat() {
+  if (chatState.done) return;
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  appendMsg('user', text);
+  appendTyping();
+
+  setTimeout(() => {
+    removeTyping();
+    // Red flag check first — any input can trigger it
+    const lower = text.toLowerCase();
+    const redFlags = ['chest pain','cannot breathe','can\'t breathe','shortness of breath','stroke','unconscious','not breathing','crushing pain','heart attack'];
+    if (redFlags.some(f => lower.includes(f))) {
+      showRedFlagInline();
+      return;
+    }
+
+    if (chatState.flowIdx === -1) {
+      // First message — match a flow
+      chatState.flowIdx = matchFlow(text);
+      chatState.step = 0;
+      if (chatState.flowIdx === -1) {
+        appendMsg('ai', 'I understand. Can you tell me more — how severe is the discomfort on a scale of 0 to 10, and how long has it been going on?');
+      } else {
+        const flow = FLOWS[chatState.flowIdx];
+        appendMsg('ai', flow.responses[0]);
+        chatState.step = 1;
+      }
+    } else {
+      const flow = FLOWS[chatState.flowIdx];
+      if (chatState.step < flow.responses.length) {
+        appendMsg('ai', flow.responses[chatState.step]);
+        chatState.step++;
+        if (chatState.step >= flow.responses.length) {
+          chatState.done = true;
+          document.getElementById('chat-input').disabled = true;
+          document.getElementById('chat-input').placeholder = 'Intake complete — clinician review in progress';
+          document.getElementById('intake-status').textContent = '✓ Complete';
+          document.getElementById('intake-status').style.color = '#86efac';
+        }
+      } else {
+        appendMsg('ai', 'Thank you. Your intake is now complete and a clinician will review your case shortly.');
+        chatState.done = true;
+      }
+    }
+  }, 900);
+}
+
+function quickSend(text) {
+  document.getElementById('chat-input').value = text;
+  sendChat();
+}
+
+function showRedFlagInline() {
+  const chat = document.getElementById('intake-chat');
+  const div = document.createElement('div');
+  div.innerHTML = `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:var(--r);padding:.75rem 1rem;font-size:13px;color:#7f1d1d;display:flex;align-items:flex-start;gap:8px"><span class="pulse-dot"></span><div><strong>Clinical team alerted.</strong> Please remain where you are — someone will be with you immediately. Do not move.</div></div>`;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+  chatState.done = true;
+  document.getElementById('chat-input').disabled = true;
+  document.getElementById('chat-input').placeholder = '🚨 Emergency escalation triggered';
+  document.getElementById('intake-status').textContent = '🚨 Escalated';
+  document.getElementById('intake-status').style.color = '#f87171';
+}
+
+function resetChat() {
+  chatState = { flowIdx: -1, step: 0, done: false };
+  const chat = document.getElementById('intake-chat');
+  chat.innerHTML = `<div class="cm"><div class="av">AI</div><div class="bub ai">Hello. I'm going to ask you a few questions about what brought you in today. Everything you share will be reviewed by a clinician.<br><br><strong>What is your main concern today?</strong></div></div>`;
+  const inp = document.getElementById('chat-input');
+  inp.disabled = false;
+  inp.value = '';
+  inp.placeholder = 'Type your symptom or answer...';
+  document.getElementById('intake-status').textContent = 'Session active';
+  document.getElementById('intake-status').style.color = 'rgba(255,255,255,.5)';
+}
+
+// Inject bounce animation for typing indicator
+const styleEl = document.createElement('style');
+styleEl.textContent = '@keyframes bounce2{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}} .qbtn{padding:5px 12px;border:1px solid var(--border);border-radius:20px;background:var(--surface);font-size:12px;color:var(--muted);cursor:pointer;transition:all .15s;font-family:var(--fb)} .qbtn:hover{border-color:var(--navy);color:var(--navy)}';
+document.head.appendChild(styleEl);
+
+// Mockup accept/reject (hero)
+function mockAccept(id, btn) {
+  const card = document.getElementById(id);
+  card.classList.add('acc'); card.classList.remove('rej');
+  card.querySelectorAll('.dbt').forEach(b=>b.classList.remove('ac','rj'));
+  btn.classList.add('ac'); btn.textContent = '✓ Accepted';
+}
+function mockReject(id, btn) {
+  const card = document.getElementById(id);
+  card.classList.add('rej'); card.classList.remove('acc');
+  card.querySelectorAll('.dbt').forEach(b=>b.classList.remove('ac','rj'));
+  btn.classList.add('rj'); btn.textContent = '✗ Rejected';
+}
+
+// Clinician dashboard accept/reject
+function clinAccept(id) {
+  const card = document.getElementById(id);
+  card.classList.add('acc'); card.classList.remove('rej');
+  document.getElementById(id+'-a').className = 'dbt ac';
+  document.getElementById(id+'-a').textContent = '✓ Accepted';
+  document.getElementById(id+'-r').className = 'dbt';
+  checkSignoff();
+}
+function clinReject(id) {
+  const card = document.getElementById(id);
+  card.classList.add('rej'); card.classList.remove('acc');
+  document.getElementById(id+'-r').className = 'dbt rj';
+  document.getElementById(id+'-r').textContent = '✗ Rejected';
+  document.getElementById(id+'-a').className = 'dbt';
+  checkSignoff();
+}
+function checkSignoff() {
+  const sel = document.getElementById('ctas-sel');
+  const btn = document.getElementById('signoff-btn');
+  const hasCtas = sel && sel.value !== '';
+  const hasDecision = document.getElementById('c-d1').classList.contains('acc') ||
+                      document.getElementById('c-d1').classList.contains('rej');
+  if (hasCtas && hasDecision) {
+    btn.style.background = 'var(--green)';
+    btn.style.cursor = 'pointer';
+  }
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  const sel = document.getElementById('ctas-sel');
+  if(sel) sel.addEventListener('change', checkSignoff);
+});
+function doSignoff() {
+  const sel = document.getElementById('ctas-sel');
+  if(!sel || !sel.value) return;
+  document.getElementById('signoff-result').style.display = 'block';
+  document.getElementById('signoff-btn').textContent = '✓ Signed Off';
+  document.getElementById('signoff-btn').style.background = 'var(--green)';
+}
+</script>
+</body>
+</html>
