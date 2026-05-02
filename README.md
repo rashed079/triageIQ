@@ -180,7 +180,7 @@ Live at: `https://rashed079.github.io/triageiq/`
 
 - 📍 Greater Sudbury, ON, Canada
 - 📧 rashed06cse@gmail.com
-- 💼 [linkedin.com/in/rashed-azad](https://www.linkedin.com/in/md-rashed-azad-chowdhury-pmp%C2%AE-a145325a/)
+- 💼 [linkedin.com/in/rashed-azad-c](https://www.linkedin.com/in/md-rashed-azad-chowdhury-pmp%C2%AE-a145325a/)
 - 🎓 MSc Computational Science — Laurentian University (SSML & CROSH Labs)
 
 ---
